@@ -25,16 +25,16 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if query.data == "about":
         await query.message.reply_text(
-            "🏠 Общежитие №1\n\n"
-            "Адрес: ...\n"
-            "Комендант: ...\n"
+            "🏠 Общежитие №2\n\n"
+            "Адрес: ул. Большая красная, д. 18\n"
+            "Комендант: Труш Лариса Александровна\n"
             "Вахта: круглосуточно"
         )
 
     elif query.data == "council":
         await query.message.reply_text(
             "👥 Студенческий совет:\n\n"
-            "Председатель — https://vk.com/username1\n"
+            "Председатель Пелагеина Юлия — https://vk.com/@pelageina_j\n"
             "Заместитель — https://vk.com/username2"
         )
 
