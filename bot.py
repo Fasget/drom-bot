@@ -29,59 +29,102 @@ def main_menu():
     return InlineKeyboardMarkup(keyboard)
 
 
+# ---------- Тексты ----------
+ABOUT_TEXT = (
+    "🏠 Общежитие №2 КНИТУ-КАИ\n\n"
+    "📍 Адрес: г. Казань, ул. Большая Красная, д. 18\n\n"
+    "👩‍💼 Комендант: Труш Лариса Александровна\n"
+    "🕒 Вахта: круглосуточно\n\n"
+    "На территории есть:\n"
+    "• кухни\n"
+    "• прачечная\n"
+    "• Wi-Fi\n"
+)
+
+COUNCIL_TEXT = (
+    "👥 Студенческий совет общежития\n\n"
+    "Председатель — Юлия Пелагеина\n"
+    "https://vk.com/pelageina_j\n\n"
+    "Председатель КПД — Олеся Черкасова\n"
+    "https://vk.com/xaseef\n\n"
+    "Председатель санитарной комиссии — Дарья Докина\n"
+    "https://vk.com/daryadokina\n\n"
+    "Глава ГРО — Анис Нуриев\n"
+    "https://vk.com/id495552862\n"
+)
+
+SOCIAL_TEXT = (
+    "🌐 Социальные сети\n\n"
+    "ВКонтакте:\n"
+    "https://vk.com/knity_kai\n\n"
+    "Telegram:\n"
+    "https://t.me/KAInomerII\n"
+)
+
+
 # ---------- Команда /start ----------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "🏠 Добро пожаловать в бот общежития №2 КНИТУ-КАИ 👋\n\n"
-        "Здесь вы можете получить информацию об общежитии,\n"
-        "о студенческом совете и найти социальные сети.\n\n"
-        "Выберите раздел:",
+        "🏠 Добро пожаловать!\n\nВыберите раздел:",
         reply_markup=main_menu()
     )
 
 
-# ---------- Обработка кнопок ----------
+# ---------- Отдельные команды ----------
+async def about_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        ABOUT_TEXT,
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("⬅️ Назад", callback_data="back")]]
+        )
+    )
+
+
+async def council_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        COUNCIL_TEXT,
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("⬅️ Назад", callback_data="back")]]
+        )
+    )
+
+
+async def social_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        SOCIAL_TEXT,
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("⬅️ Назад", callback_data="back")]]
+        )
+    )
+
+
+async def photos_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    media = [
+        InputMediaPhoto(
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRraowzVn_lO4boU8-NSkLsHCedr7V42kL3tA&s",
+            caption="Фасад общежития №2"
+        )
+    ]
+    await update.message.reply_media_group(media)
+
+
+# ---------- Кнопки ----------
 async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
-    back_button = InlineKeyboardMarkup(
+    back_markup = InlineKeyboardMarkup(
         [[InlineKeyboardButton("⬅️ Назад", callback_data="back")]]
     )
 
     if query.data == "about":
-        await query.edit_message_text(
-            "🏠 Общежитие №2 КНИТУ-КАИ\n\n"
-            "📍 Адрес: г. Казань, ул. Большая Красная, д. 18\n\n"
-            "👩‍💼 Комендант: Труш Лариса Александровна\n"
-            "🕒 Вахта: круглосуточно\n\n"
-            "Общежитие предназначено для проживания студентов.\n"
-            "На территории есть:\n"
-            "• оборудованные комнаты\n"
-            "• кухни на этажах\n"
-            "• прачечная\n"
-            "• учебные зоны\n"
-            "• Wi-Fi\n\n"
-            "По всем вопросам можно обращаться к коменданту "
-            "или в студенческий совет.",
-            reply_markup=back_button
-        )
+        await query.edit_message_text(ABOUT_TEXT, reply_markup=back_markup)
 
     elif query.data == "council":
-        await query.edit_message_text(
-            "👥 Студенческий совет общежития\n\n"
-            "Председатель — Юлия Пелагеина\n"
-            "https://vk.com/pelageina_j\n\n"
-            "Председатель КПД — Олеся Черкасова\n"
-            "https://vk.com/xaseef\n\n"
-            "Председатель санитарной комиссии — Дарья Докина\n"
-            "https://vk.com/daryadokina\n\n"
-            "Глава ГРО — Анис Нуриев\n"
-            "https://vk.com/id495552862\n\n"
-            "Студсовет помогает решать вопросы проживания, "
-            "организует мероприятия и поддерживает порядок.",
-            reply_markup=back_button
-        )
+        await query.edit_message_text(COUNCIL_TEXT, reply_markup=back_markup)
+
+    elif query.data == "social":
+        await query.edit_message_text(SOCIAL_TEXT, reply_markup=back_markup)
 
     elif query.data == "photos":
         media = [
@@ -90,19 +133,7 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 caption="Фасад общежития №2"
             )
         ]
-
         await query.message.reply_media_group(media)
-
-    elif query.data == "social":
-        await query.edit_message_text(
-            "🌐 Социальные сети общежития\n\n"
-            "ВКонтакте:\n"
-            "https://vk.com/knity_kai\n\n"
-            "Telegram-канал:\n"
-            "https://t.me/KAInomerII\n\n"
-            "Подписывайтесь, чтобы быть в курсе новостей!",
-            reply_markup=back_button
-        )
 
     elif query.data == "back":
         await query.edit_message_text(
@@ -116,6 +147,11 @@ def main():
     app = ApplicationBuilder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("about", about_command))
+    app.add_handler(CommandHandler("council", council_command))
+    app.add_handler(CommandHandler("social", social_command))
+    app.add_handler(CommandHandler("photos", photos_command))
+
     app.add_handler(CallbackQueryHandler(buttons))
 
     print("Бот запущен...")
