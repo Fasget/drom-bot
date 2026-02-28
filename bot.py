@@ -37,7 +37,8 @@ def main_menu():
         [InlineKeyboardButton("🧺 Прачечная", callback_data="laundry")],
         [InlineKeyboardButton("🏋️ Спортзал", callback_data="gym")],
         [InlineKeyboardButton("🚿 Для новичков", callback_data="beginners")],
-        [InlineKeyboardButton("🏗️ ЖБК", callback_data="jbk")]
+        [InlineKeyboardButton("🏗️ ЖБК", callback_data="jbk")],
+        [InlineKeyboardButton("📦 ГРО", callback_data="gro")] 
     ]
     return InlineKeyboardMarkup(keyboard)
 
@@ -63,25 +64,30 @@ COUNCIL_TEXT = (
     "👥 Студенческий совет общежития\n\n"
     "Председатель - Юлия Пелагеина\n"
     "https://vk.com/pelageina_j\n\n"
+    "Секретарь председателя - Кристина Ильина\n"
+    "https://vk.ru/tewass\n\n"
     "Председатель КПД - Олеся Черкасова\n"
     "https://vk.com/xaseef\n\n"
     "Председатель санитарной комиссии - Дарья Докина\n"
     "https://vk.com/daryadokina\n\n"
+    "Сотрудник санитарной комиссии - Мария Кунгурова\n"
+    "https://vk.ru/marusya_marfaa\n\n"
+    "Ответственная за информационную работу (СМИ)- Тазетдинова Лилия\n"
+    "https://vk.ru/loonixsson\n\n"
     "Глава ГРО - Анис Нуриев\n"
     "https://vk.com/id495552862\n\n"
     "Староста первого этажа - Дарья Сушенцова\n"
     "https://vk.com/uyccigcuuxfurixr\n\n"
     "Староста третьего этажа крыла ЛА - Егор Иванов\n"
     "https://vk.com/gerka_igor\n\n"
-
+    "Староста четвёртого этажа левого крыла - Зарина Хуснутдинова\n"
+    "https://vk.ru/azakatbilalbilalkakkolenochki\n\n"
 )
 
 SOCIAL_TEXT = (
     "🌐 Социальные сети\n\n"
     "ВКонтакте: https://vk.com/knity_kai\n"
-
     "Telegram: https://t.me/KAInomerII\n"
-
 )
 
 CHECKIN_TEXT = (
@@ -93,7 +99,6 @@ CHECKIN_TEXT = (
     "• Фото 3x4 (4 шт)\n"
     "• Копия прививочного сертификата\n"
     "• Договор найма (заполняется на месте)\n\n"
-    "💰 Оплата:\n"
     "📍 Адрес: Большая Красная, 18\n"
     "🗺️ Карта: https://yandex.com/maps/-/CPqMRP3Z\n\n"
     "📞 Контактный телефон: 8 (843) 231-01-29\n"
@@ -103,7 +108,7 @@ RULES_TEXT = (
     "⚖️ Правила внутреннего распорядка (ПВР)\n\n"
     "🕐 Режим работы:\n"
     "• Вход в общежитие: круглосуточно\n"
-    "• Комендантский час: с 23:00 до 06:00\n\n"
+    "• Комендантский час: с 22:00 до 06:00 (в летнее время с 22:00 до 06:00)\n\n"
     "🚫 Запрещается:\n"
     "• Курение в помещениях\n"
     "• Распитие алкоголя\n"
@@ -130,12 +135,12 @@ LAUNDRY_TEXT = (
     "⏰ Режим работы: круглосуточно\n"
     "💰 Стоимость и оплата: \n"
     "• Стиральная машина: 135 руб/стирка\n"
-    "• Оплата происходит по ссылке: https://washer.mylaundry.ru/device/pr15kai2"
+    "• Оплата происходит по ссылке: https://washer.mylaundry.ru/device/pr15kai2\n\n"
     "📋 Правила:\n"
     "• Не оставляйте вещи без присмотра\n"
     "• После использования протрите барабан\n"
     "• Загрузка не более 5 кг\n\n"
-    "При возникновении проблем обращаться к студенческому совету и технической поддержи по контактам в прачечной\n"
+    "При возникновении проблем обращаться к студенческому совету и технической поддержке по контактам в прачечной\n"
 )
 
 GYM_TEXT = (
@@ -143,7 +148,7 @@ GYM_TEXT = (
     "📍 Расположение: 1 этаж\n\n"
     "⏰ График работы:\n"
     "• Ежедневно: 09:00 - 22:00\n"
-    "• Для попадания в тренажерный зал ключ нужно взять у ответсвенного (см. Студенческий совет)\n\n"
+    "• Для попадания в тренажерный зал ключ нужно взять у ответственного (см. Студенческий совет)\n\n"
     "💰 Бесплатно для проживающих (по студенческому)\n\n"
     "📋 Правила:\n"
     "• Занимайтесь в спортивной обуви\n"
@@ -177,6 +182,18 @@ JBK_TEXT = (
     "🏗️ Жилищно-бытовая комиссия (ЖБК)\n\n"
     "Что такое ЖБК?\n"
     "Комиссия, которая в конце года решает, оставить вас на следующий год или нет.\n\n"
+)
+
+GRO_TEXT = (
+    "📦 Группа режима общежития (ГРО)\n\n"
+    "ГРО занимается заселением, выселением и организацией быта в общежитии.\n\n"
+    "👤 Глава ГРО:\n"
+    "Анис Нуриев - https://vk.com/id495552862\n\n"
+    "👥 Сотрудники ГРО:\n\n"
+    "Лия Хасанова - https://vk.ru/wnxptl\n\n"
+    "Софья Талашова - https://vk.ru/sofia_talashova\n\n"
+    "Ганина Екатерина - https://vk.ru/mewsex\n\n"
+    "📋 Функции ГРО:\n"
 )
 
 
@@ -226,6 +243,9 @@ async def beginners_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def jbk_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(JBK_TEXT, reply_markup=BACK_BUTTON)
 
+async def gro_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(GRO_TEXT, reply_markup=BACK_BUTTON)
+
 
 # ---------- Кнопки ----------
 async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -252,14 +272,14 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(BEGINNERS_TEXT, reply_markup=BACK_BUTTON)
     elif query.data == "jbk":
         await query.edit_message_text(JBK_TEXT, reply_markup=BACK_BUTTON)
+    elif query.data == "gro":  
+        await query.edit_message_text(GRO_TEXT, reply_markup=BACK_BUTTON)
     elif query.data == "photos":
-        media = [
-            InputMediaPhoto(
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRraowzVn_lO4boU8-NSkLsHCedr7V42kL3tA&s",
-                caption="Фасад общежития №2"
-            )
-        ]
-        await query.message.reply_media_group(media)
+        await query.message.reply_photo(
+            photo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRraowzVn_lO4boU8-NSkLsHCedr7V42kL3tA&s",
+            caption="Фасад общежития №2",
+            reply_markup=BACK_BUTTON
+        )
     elif query.data == "back":
         await query.edit_message_text(
             "Вы в главном меню!\nВыберите раздел:",
@@ -284,6 +304,7 @@ def main():
     app.add_handler(CommandHandler("gym", gym_command))
     app.add_handler(CommandHandler("beginners", beginners_command))
     app.add_handler(CommandHandler("jbk", jbk_command))
+    app.add_handler(CommandHandler("gro", gro_command)) 
 
     # Кнопки
     app.add_handler(CallbackQueryHandler(buttons))
