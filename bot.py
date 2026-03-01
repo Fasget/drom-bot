@@ -36,7 +36,7 @@ def main_menu():
         [InlineKeyboardButton("🏢 Администрация", callback_data="administration")],
         [InlineKeyboardButton("🧺 Прачечная", callback_data="laundry")],
         [InlineKeyboardButton("🏋️ Спортзал", callback_data="gym")],
-        [InlineKeyboardButton("🚿 Для новичков", callback_data="beginners")],
+        [InlineKeyboardButton("⚠️ Руоводство для чайников", callback_data="beginners")],
         [InlineKeyboardButton("🏗️ ЖБК", callback_data="jbk")],
         [InlineKeyboardButton("📦 ГРО", callback_data="gro")] 
     ]
@@ -164,7 +164,7 @@ GYM_TEXT = (
 )
 
 BEGINNERS_TEXT = (
-    "🚿 Для новичков (гигиена и быт)\n\n"
+    "⚠️ Для новичков (гигиена и быт)\n\n"
     "🚿 Душ:\n"
     "• Используйте резиновые тапочки\n"
     "• Убирайте средства личной гигиены в свою мусорку\n"
@@ -184,7 +184,7 @@ BEGINNERS_TEXT = (
     "• Чистота зависит от вас\n"
     "• Уважайте соседей, не шумите ночью\n"
     "• Общайтесь с соседями - вместе решать бытовые вопросы легче\n"
-    "• Не юойтесь обращаться к студенческому совету - они помогут решить ваши проблемы\n"
+    "• Не бойтесь обращаться к студенческому совету - они помогут решить ваши проблемы\n"
     )
 
 JBK_TEXT = (
