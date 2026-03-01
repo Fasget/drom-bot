@@ -36,7 +36,7 @@ def main_menu():
         [InlineKeyboardButton("🏢 Администрация", callback_data="administration")],
         [InlineKeyboardButton("🧺 Прачечная", callback_data="laundry")],
         [InlineKeyboardButton("🏋️ Спортзал", callback_data="gym")],
-        [InlineKeyboardButton("⚠️ Руоводство для чайников", callback_data="beginners")],
+        [InlineKeyboardButton("⚠️ Руководство для чайников", callback_data="beginners")],
         [InlineKeyboardButton("🏗️ ЖБК", callback_data="jbk")],
         [InlineKeyboardButton("📦 ГРО", callback_data="gro")] 
     ]
@@ -113,7 +113,7 @@ RULES_TEXT = (
     "⚖️ Правила внутреннего распорядка (ПВР)\n\n"
     "🕐 Режим работы:\n"
     "• Вход в общежитие: круглосуточно\n"
-    "• Комендантский час: с 22:00 до 06:00 (в летнее время с 22:00 до 06:00)\n\n"
+    "• Комендантский час: с 22:00 до 06:00 (в летнее время с 23:00 до 06:00)\n\n"
     "🚫 Запрещается:\n"
     "• Курение в помещениях\n"
     "• Распитие алкоголя\n"
@@ -137,7 +137,7 @@ ADMINISTRATION_TEXT = (
 
 LAUNDRY_TEXT = (
     "🧺 Прачечная\n\n"
-    "📍 Расположение: перывй этаж, конец коридора\n\n"
+    "📍 Расположение: первый этаж, конец коридора\n\n"
     "⏰ Режим работы: круглосуточно\n"
     "💰 Стоимость и оплата: \n"
     "• Стиральная машина: 135 руб/стирка\n"
@@ -164,7 +164,7 @@ GYM_TEXT = (
 )
 
 BEGINNERS_TEXT = (
-    "⚠️ Для новичков (гигиена и быт)\n\n"
+    "⚠️ Для новичков\n\n"
     "🚿 Душ:\n"
     "• Используйте резиновые тапочки\n"
     "• Убирайте средства личной гигиены в свою мусорку\n"
@@ -296,10 +296,18 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=BACK_BUTTON
         )
     elif query.data == "back":
-        await query.edit_message_text(
-            "Вы в главном меню!\nВыберите раздел:",
-            reply_markup=main_menu()
-        )
+    # если сообщение с фото — удаляем его
+        if query.message.photo:
+            await query.message.delete()
+            await query.message.chat.send_message(
+                "Вы в главном меню!\nВыберите раздел:",
+                reply_markup=main_menu()
+            )
+        else:
+            await query.edit_message_text(
+                "Вы в главном меню!\nВыберите раздел:",
+                reply_markup=main_menu()
+            )
 
 
 # ---------- Запуск ----------
