@@ -15,7 +15,7 @@ from telegram.ext import (
 )
 
 TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = 512510833
+ADMIN_ID = "@messegesKAI2"
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN не найден")
