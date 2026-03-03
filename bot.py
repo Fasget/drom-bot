@@ -3,16 +3,19 @@ from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Update,
-    InputMediaPhoto
+    InputMediaPhoto 
 )
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     CallbackQueryHandler,
-    ContextTypes
+    ContextTypes,
+    MessageHandler,
+    filters
 )
 
 TOKEN = os.getenv("BOT_TOKEN")
+ADMIN_ID = 512510833
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN не найден")
@@ -21,6 +24,9 @@ if not TOKEN:
 # ---------- Константы ----------
 BACK_BUTTON = InlineKeyboardMarkup(
     [[InlineKeyboardButton("⬅️ Назад", callback_data="back")]]
+)
+FEEDBACK_BACK_BUTTON = InlineKeyboardMarkup(
+    [[InlineKeyboardButton("⬅️ Назад", callback_data="back_from_feedback")]]
 )
 
 
@@ -38,7 +44,8 @@ def main_menu():
         [InlineKeyboardButton("🏋️ Спортзал", callback_data="gym")],
         [InlineKeyboardButton("⚠️ Руководство для чайников", callback_data="beginners")],
         [InlineKeyboardButton("🏗️ ЖБК", callback_data="jbk")],
-        [InlineKeyboardButton("📦 ГРО", callback_data="gro")] 
+        [InlineKeyboardButton("📦 ГРО", callback_data="gro")], 
+        [InlineKeyboardButton("💬 Жалобы и предложения", callback_data="feedback")],
     ]
     return InlineKeyboardMarkup(keyboard)
 
@@ -263,6 +270,41 @@ async def gro_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ---------- Кнопки ----------
+# ---------- Обработка текста (пожелание) ----------
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    if context.user_data.get("waiting_feedback"):
+        text = update.message.text
+
+        username = update.effective_user.username
+        user_info = f"@{username}" if username else update.effective_user.full_name
+
+        await context.bot.send_message(
+            chat_id=ADMIN_ID,
+            text=f"📩 Новое пожелание:\n\n{text}\n\nОт: {user_info}\nID: {update.effective_user.id}"
+        )
+
+        context.user_data["waiting_feedback"] = False
+
+        await update.message.reply_text(
+            "Спасибо! Пожелание отправлено ✅",
+            reply_markup=main_menu()
+        )
+    else:
+        await update.message.reply_text(
+            "Пожалуйста, используйте кнопки меню.",
+            reply_markup=main_menu()
+        )
+
+
+# ---------- Отмена ----------
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    context.user_data["waiting_feedback"] = False
+    await update.message.reply_text(
+        "Отправка отменена.",
+        reply_markup=main_menu()
+    )
+
 async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -290,10 +332,25 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == "gro":  
         await query.edit_message_text(GRO_TEXT, reply_markup=BACK_BUTTON)
     elif query.data == "photos":
+        await query.message.delete()
         await query.message.reply_photo(
             photo="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRraowzVn_lO4boU8-NSkLsHCedr7V42kL3tA&s",
             caption="Фасад общежития №2",
             reply_markup=BACK_BUTTON
+        )
+    elif query.data == "feedback":
+        await query.message.delete()
+        context.user_data["waiting_feedback"] = True
+        await query.message.chat.send_message(
+            "Напишите ваше пожелание одним сообщением.",
+            reply_markup=FEEDBACK_BACK_BUTTON
+        )
+    elif query.data == "back_from_feedback":
+        context.user_data["waiting_feedback"] = False
+        await query.message.delete()
+        await query.message.chat.send_message(
+            "Вы в главном меню!\nВыберите раздел:",
+            reply_markup=main_menu()
         )
     elif query.data == "back":
     # если сообщение с фото — удаляем его
@@ -316,6 +373,7 @@ def main():
 
     # Команды
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("cancel", cancel))
     app.add_handler(CommandHandler("about", about_command))
     app.add_handler(CommandHandler("council", council_command))
     app.add_handler(CommandHandler("social", social_command))
@@ -331,6 +389,7 @@ def main():
 
     # Кнопки
     app.add_handler(CallbackQueryHandler(buttons))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("Бот запущен...")
     app.run_polling()
