@@ -281,13 +281,13 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await context.bot.send_message(
             chat_id=ADMIN_ID,
-            text=f"📩 Новое пожелание:\n\n{text}\n\nОт: {user_info}\nID: {update.effective_user.id}"
+            text=f"📩 Новое сообщение:\n\n{text}\n\nОт: {user_info}\nID: {update.effective_user.id}"
         )
 
         context.user_data["waiting_feedback"] = False
 
         await update.message.reply_text(
-            "Спасибо! Пожелание отправлено ✅",
+            "Спасибо! Сообщение отправлено ✅",
             reply_markup=main_menu()
         )
     else:
@@ -342,7 +342,7 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.message.delete()
         context.user_data["waiting_feedback"] = True
         await query.message.chat.send_message(
-            "Напишите ваше пожелание одним сообщением.",
+            "Напишите ваше сообщение одним сообщением.\nОбразец: Иванов Иван, 105ком. Сломалась тумбочка.",
             reply_markup=FEEDBACK_BACK_BUTTON
         )
     elif query.data == "back_from_feedback":
