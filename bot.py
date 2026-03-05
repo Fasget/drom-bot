@@ -1,11 +1,11 @@
 import os
-from telegram import (
+from telegram import ( # pyright: ignore[reportMissingImports] # pyright: ignore[reportMissingImports]
     InlineKeyboardButton,
     InlineKeyboardMarkup,
     Update,
     InputMediaPhoto 
 )
-from telegram.ext import (
+from telegram.ext import ( # pyright: ignore[reportMissingImports]
     ApplicationBuilder,
     CommandHandler,
     CallbackQueryHandler,
