@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = "messegesKAI2"
+ADMIN_ID = "@messegesKAI2"
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN не найден")
