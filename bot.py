@@ -1,4 +1,6 @@
 import os
+import threading 
+from flask import Flask
 from telegram import ( # pyright: ignore[reportMissingImports] # pyright: ignore[reportMissingImports]
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -18,10 +20,26 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = "@messegesKAI2"
+ADMIN_ID = "messegesKAI2"
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN не найден")
+
+# ---------- Flask (чтобы Render не засыпал) ----------
+app_web = Flask(__name__)
+
+@app_web.route("/")
+def home():
+    return "OK"
+
+@app_web.route("/health")
+def health():
+    return "OK"
+
+
+def run_web():
+    port = int(os.environ.get("PORT", 10000))
+    app_web.run(host="0.0.0.0", port=port)
 
 
 # ---------- Константы ----------
@@ -371,7 +389,7 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ---------- Запуск ----------
-def main():
+def run_bot():
     app = ApplicationBuilder().token(TOKEN).build()
 
     # Команды
@@ -397,6 +415,7 @@ def main():
     print("Бот запущен...")
     app.run_polling()
 
-
+# ---------- MAIN ----------
 if __name__ == "__main__":
-    main()
+    threading.Thread(target=run_web, daemon=True).start()
+    run_bot()
