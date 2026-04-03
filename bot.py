@@ -13,6 +13,9 @@ from telegram.ext import ( # pyright: ignore[reportMissingImports]
     MessageHandler,
     filters
 )
+from dotenv import load_dotenv
+
+load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 ADMIN_ID = "@messegesKAI2"
