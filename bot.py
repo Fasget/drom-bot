@@ -16,11 +16,14 @@ from telegram.ext import ( # pyright: ignore[reportMissingImports]
     filters
 )
 from dotenv import load_dotenv
+import asyncio
 
+async def drop_updates(app):
+    await app.bot.delete_webhook(drop_pending_updates=True)
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = -1003778125137
+ADMIN_ID =-1003778125137
 
 if not TOKEN:
     raise ValueError("BOT_TOKEN не найден")
@@ -392,6 +395,7 @@ async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def run_bot():
     app = ApplicationBuilder().token(TOKEN).build()
 
+    app.post_init = drop_updates
     # Команды
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("cancel", cancel))
@@ -413,7 +417,8 @@ def run_bot():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     print("Бот запущен...")
-    app.run_polling()
+    app.run_polling(drop_pending_updates=True)
+    
 
 # ---------- MAIN ----------
 if __name__ == "__main__":
